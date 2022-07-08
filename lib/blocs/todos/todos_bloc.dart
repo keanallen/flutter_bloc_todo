@@ -10,6 +10,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     on<LoadTodo>(_onLoadTodo);
     on<UpdateTodo>(_onUpdateTodo);
     on<AddTodo>(_onAddTodo);
+    on<DeleteTodo>(_onDeleteTodo);
   }
 
   void _onLoadTodo(LoadTodo event, Emitter<TodosState> emit) {
@@ -35,6 +36,17 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       List<Todo> todos = state.todos
           .map((todo) => todo.id == event.todo.id ? event.todo : todo)
           .toList();
+      emit(
+        TodosLoaded(todos: todos),
+      );
+    }
+  }
+
+  void _onDeleteTodo(DeleteTodo event, Emitter<TodosState> emit) {
+    final state = this.state;
+    if (state is TodosLoaded) {
+      List<Todo> todos =
+          state.todos.where((todo) => todo.id != event.todo.id).toList();
       emit(
         TodosLoaded(todos: todos),
       );

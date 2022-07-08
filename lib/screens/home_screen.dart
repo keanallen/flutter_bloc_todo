@@ -81,6 +81,40 @@ class TodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onLongPress: () {
+        showBottomSheet(
+            context: context,
+            builder: (context) {
+              return BlocListener<TodosBloc, TodosState>(
+                listener: (context, state) {
+                  if (state is TodosLoaded) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Task Deleted"),
+                      ),
+                    );
+                  }
+                },
+                child: Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(8),
+                  height: 100,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.delete),
+                        title: const Text("Delete"),
+                        onTap: () {
+                          context.read<TodosBloc>().add(DeleteTodo(todo: todo));
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
       leading: FittedBox(
           child: Text(
         "#${todo.id}",
