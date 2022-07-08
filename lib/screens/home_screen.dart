@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:k_todo/blocs/todos/todos_bloc.dart';
+import 'package:k_todo/screens/add_todo_screen.dart';
 
 import '../models/todo_model.dart';
 
@@ -13,7 +14,11 @@ class HomePage extends StatelessWidget {
     var appBar = AppBar(
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NewTodo(),
+              )),
           icon: const Icon(Icons.add_task),
         ),
       ],
